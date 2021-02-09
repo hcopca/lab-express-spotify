@@ -36,15 +36,21 @@ app.get('/artist-search', async(req, res, next) => {
     console.log(datosApiRespuesta.body.artists.items)
     res.render('artistsearchresults', datosApiRespuesta.body.artists.items)
 })
+app.get('/album/:artistId', async(req, res, next) => {
+    let album = req.params.artistId
+    const getAlbums = await spotifyApi.getArtistAlbums(album)
+    res.render('album', getAlbums.body.items)
+})
 
-app.get('/tracks/:id', async(req, res, next) => {
-    const { id } = req.params
-    const canciones = await spotifyApi.getAlbumTracks(id).catch(err => console.log(err))
-    console.log(canciones)
+
+app.get('/tracks/:albumId', async(req, res, next) => {
+    let cancion = req.params.albumId
+    const getTracks = await spotifyApi.getAlbumTracks(cancion)
+    res.render('tracks', getTracks.body.items)
 })
 
 
 
 
 
-app.listen(3000, () => console.log('My Spotify project running on port 3001 🎧 🥁 🎸 🔊'));
+app.listen(3001, () => console.log('My Spotify project running on port 3001 🎧 🥁 🎸 🔊'));
